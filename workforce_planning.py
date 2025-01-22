@@ -33,10 +33,10 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
         problem += H[i] <= maxh, f"Hiring_Capacity_{i}"
         problem += F[i] <= maxf, f"Firing_Capacity_{i}"
 
-        # Overtime constraint
+        # Replace max with a conditional constraint for Overtime
         problem += O[i] <= E[i] * overtime_rate, f"Overtime_{i}"
 
-        # Unmet demand constraint
+        # Replace max with a conditional constraint for Unmet Demand
         problem += U[i] >= demand[i] - E[i] * working_hours - O[i], f"Unmet_Demand_{i}"
 
     # Solve the problem
@@ -104,56 +104,57 @@ if st.button("Optimize"):
     
     # Display results as a table
     st.dataframe(details_df)
+
+    # Visualization - Plotting
+
+    # Bar Chart of Hired, Fired, and Total Employees each week
+    st.subheader("Bar Chart: Hired, Fired, and Total Employees each week")
     
-    # Bar chart for number of employees hired, fired, and total employees
-    st.subheader("Weekly Employee Overview")
-    hired = details_df["Hired"]
-    fired = details_df["Fired"]
-    total_employees = details_df["Employees"]
+    # Adjusting the Data for Bar Chart
+    details_df['Week'] = details_df['Week'].astype(str)
+    fig, ax = plt.subplots(figsize=(10, 6))
+    details_df.set_index('Week')[['Hired', 'Fired', 'Employees']].plot(kind='bar', stacked=True, ax=ax)
+    ax.set_title("Hired, Fired, and Employees per Week")
+    ax.set_ylabel("Number of Employees")
+    ax.set_xlabel("Week")
+    st.pyplot(fig)
 
-    # Bar chart visualization
-    employee_overview_df = pd.DataFrame({
-        'Hired': hired,
-        'Fired': fired,
-        'Total Employees': total_employees
-    })
+    # Line Chart of Weekly Demand and Employees Capacity to meet it (including overtime)
+    st.subheader("Line Chart: Weekly Demand vs. Employees' Capacity")
+    
+    # Plot demand vs employee capacity
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(details_df['Week'], details_df['Demand'], label='Demand', marker='o', linestyle='-', color='blue')
+    ax.plot(details_df['Week'], details_df['Employees'] * working_hours + details_df['Overtime'], 
+            label='Employees Capacity (Including Overtime)', marker='x', linestyle='-', color='green')
+    ax.set_title("Weekly Demand vs. Employee Capacity (including Overtime)")
+    ax.set_ylabel("Capacity / Demand")
+    ax.set_xlabel("Week")
+    ax.legend()
+    st.pyplot(fig)
 
-    st.bar_chart(employee_overview_df)
+    # Pie Chart: Distribution of costs (hiring, firing, salary, overtime, and penalties)
+    st.subheader("Pie Chart: Distribution of Costs")
 
-    # Line chart showing weekly demand and employee capacity (including overtime and unmet demand)
-    st.subheader("Demand vs Employee Capacity")
-    overtime = details_df["Overtime"]
-    unmet_demand = details_df["Unmet Demand"]
-    demand_capacity_df = pd.DataFrame({
-        'Demand': demand,
-        'Employee Capacity': total_employees * working_hours,
-        'Overtime': overtime,
-        'Unmet Demand': unmet_demand
-    })
-
-    st.line_chart(demand_capacity_df)
-
-    # Pie chart for cost distribution
-    st.subheader("Cost Distribution")
-    total_hiring_cost = sum(hired) * hiring_cost
-    total_firing_cost = sum(fired) * firing_cost
-    total_salary_cost = sum(total_employees) * salary_cost
-    total_overtime_cost = sum(overtime) * overtime_cost
-    total_penalty_cost = sum(unmet_demand) * penalty_cost
-
-    cost_data = {
-        'Hiring': total_hiring_cost,
-        'Firing': total_firing_cost,
-        'Salary': total_salary_cost,
-        'Overtime': total_overtime_cost,
-        'Penalties': total_penalty_cost
+    # Pie chart of cost distribution
+    costs = {
+        'Hiring': sum(details_df['Hired'] * hiring_cost),
+        'Firing': sum(details_df['Fired'] * firing_cost),
+        'Salary': sum(details_df['Employees'] * salary_cost),
+        'Overtime': sum(details_df['Overtime'] * overtime_cost),
+        'Penalties': sum(details_df['Unmet Demand'] * penalty_cost)
     }
-
-    cost_labels = list(cost_data.keys())
-    cost_values = list(cost_data.values())
-
-    fig, ax = plt.subplots()
-    ax.pie(cost_values, labels=cost_labels, autopct='%1.1f%%', startangle=75)
-    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
     
+    labels = costs.keys()
+    sizes = costs.values()
+
+    # Plotting the pie chart with slanted labels
+    fig, ax = plt.subplots(figsize=(8, 8))
+    wedges, texts, autotexts = ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90, 
+                                      wedgeprops={'edgecolor': 'black'})
+    
+    # Slanting labels
+    for text in texts:
+        text.set_rotation(30)
+    ax.set_title("Cost Distribution")
     st.pyplot(fig)
