@@ -104,3 +104,4 @@ if st.button("Optimize"):
     # Display results as a table
     st.dataframe(details_df)
     
+
