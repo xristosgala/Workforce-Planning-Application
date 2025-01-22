@@ -2,6 +2,7 @@ import streamlit as st
 import random
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost, 
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate, 
@@ -103,4 +104,47 @@ if st.button("Optimize"):
     
     # Display results as a table
     st.dataframe(details_df)
-    
+
+    # Plotting the results
+
+    # 1. Bar chart for number of Hired, Fired, and Employees each week
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.bar(details_df['Week'] - 0.2, details_df['Hired'], width=0.4, label="Hired", color='green')
+    ax.bar(details_df['Week'] + 0.2, details_df['Fired'], width=0.4, label="Fired", color='red')
+    ax.set_xlabel('Week')
+    ax.set_ylabel('Number of Employees')
+    ax.set_title('Employees Hired and Fired Each Week')
+    ax.legend()
+    st.pyplot(fig)
+
+    # 2. Line chart for Demand, Employees, Overtime, and Unmet Demand
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.plot(details_df['Week'], details_df['Demand'], label="Demand", color='blue', marker='o')
+    ax.plot(details_df['Week'], details_df['Employees'] * working_hours, label="Employees Capacity", color='orange', linestyle='--')
+    ax.plot(details_df['Week'], details_df['Overtime'], label="Overtime", color='purple', linestyle='-.')
+    ax.plot(details_df['Week'], details_df['Unmet Demand'], label="Unmet Demand", color='red', linestyle=':')
+    ax.set_xlabel('Week')
+    ax.set_ylabel('Employees / Demand')
+    ax.set_title('Demand vs Employees and Overtime')
+    ax.legend()
+    st.pyplot(fig)
+
+    # 3. Pie chart for cost distribution
+    total_hiring_cost = sum(details_df['Hired'] * hiring_cost)
+    total_firing_cost = sum(details_df['Fired'] * firing_cost)
+    total_salary_cost = sum(details_df['Employees'] * salary_cost)
+    total_overtime_cost = sum(details_df['Overtime'] * overtime_cost)
+    total_penalty_cost = sum(details_df['Unmet Demand'] * penalty_cost)
+
+    cost_data = {
+        "Hiring": total_hiring_cost,
+        "Firing": total_firing_cost,
+        "Salary": total_salary_cost,
+        "Overtime": total_overtime_cost,
+        "Penalties": total_penalty_cost
+    }
+
+    fig, ax = plt.subplots(figsize=(7, 7))
+    ax.pie(cost_data.values(), labels=cost_data.keys(), autopct='%1.1f%%', startangle=90)
+    ax.set_title('Cost Distribution')
+    st.pyplot(fig)
