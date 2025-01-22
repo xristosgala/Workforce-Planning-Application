@@ -104,7 +104,7 @@ if st.button("Optimize"):
     
     # Display results as a table
     st.dataframe(details_df)
-    
+
     # Create an interactive line chart for the Demand and Workforce Data
     fig = go.Figure()
 
