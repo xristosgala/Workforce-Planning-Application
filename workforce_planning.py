@@ -2,7 +2,6 @@ import streamlit as st
 import random
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
 import pandas as pd
-import matplotlib.pyplot as plt
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost, 
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate, 
@@ -33,10 +32,10 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
         problem += H[i] <= maxh, f"Hiring_Capacity_{i}"
         problem += F[i] <= maxf, f"Firing_Capacity_{i}"
 
-        # Overtime constraint
+        # Replace max with a conditional constraint for Overtime
         problem += O[i] <= E[i] * overtime_rate, f"Overtime_{i}"
 
-        # Unmet demand constraint
+        # Replace max with a conditional constraint for Unmet Demand
         problem += U[i] >= demand[i] - E[i] * working_hours - O[i], f"Unmet_Demand_{i}"
 
     # Solve the problem
@@ -105,55 +104,3 @@ if st.button("Optimize"):
     # Display results as a table
     st.dataframe(details_df)
     
-    # Bar chart for number of employees hired, fired, and total employees
-    st.subheader("Weekly Employee Overview")
-    hired = details_df["Hired"]
-    fired = details_df["Fired"]
-    total_employees = details_df["Employees"]
-
-    # Bar chart visualization
-    employee_overview_df = pd.DataFrame({
-        'Hired': hired,
-        'Fired': fired,
-        'Total Employees': total_employees
-    })
-
-    st.bar_chart(employee_overview_df)
-
-    # Line chart showing weekly demand and employee capacity (including overtime and unmet demand)
-    st.subheader("Demand vs Employee Capacity")
-    overtime = details_df["Overtime"]
-    unmet_demand = details_df["Unmet Demand"]
-    demand_capacity_df = pd.DataFrame({
-        'Demand': demand,
-        'Employee Capacity': total_employees * working_hours,
-        'Overtime': overtime,
-        'Unmet Demand': unmet_demand
-    })
-
-    st.line_chart(demand_capacity_df)
-
-    # Pie chart for cost distribution
-    st.subheader("Cost Distribution")
-    total_hiring_cost = sum(hired) * hiring_cost
-    total_firing_cost = sum(fired) * firing_cost
-    total_salary_cost = sum(total_employees) * salary_cost
-    total_overtime_cost = sum(overtime) * overtime_cost
-    total_penalty_cost = sum(unmet_demand) * penalty_cost
-
-    cost_data = {
-        'Hiring': total_hiring_cost,
-        'Firing': total_firing_cost,
-        'Salary': total_salary_cost,
-        'Overtime': total_overtime_cost,
-        'Penalties': total_penalty_cost
-    }
-
-    cost_labels = list(cost_data.keys())
-    cost_values = list(cost_data.values())
-
-    fig, ax = plt.subplots()
-    ax.pie(cost_values, labels=cost_labels, autopct='%1.1f%%', startangle=90)
-    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    
-    st.pyplot(fig)
