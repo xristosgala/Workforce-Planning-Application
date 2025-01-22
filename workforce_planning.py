@@ -153,7 +153,7 @@ if st.button("Optimize"):
     cost_values = list(cost_data.values())
 
     fig, ax = plt.subplots()
-    ax.pie(cost_values, labels=cost_labels, autopct='%1.1f%%', startangle=90)
+    ax.pie(cost_values, labels=cost_labels, autopct='%1.1f%%', startangle=75)
     ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
     
     st.pyplot(fig)
