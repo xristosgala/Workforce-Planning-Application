@@ -1,6 +1,8 @@
 import streamlit as st
 import random
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
+import pandas as pd
+import altair as alt
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost, 
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate, 
@@ -64,20 +66,20 @@ st.title("Workforce Planning Optimization")
 
 # Input Fields
 st.sidebar.header("Input Parameters")
-weeks = st.sidebar.number_input("Number of Weeks", min_value=1, max_value=52, value=4)
+weeks = st.sidebar.number_input("Number of Weeks", min_value=1, value=4)
 
 hiring_cost = st.sidebar.number_input("Hiring Cost", value=100)
 firing_cost = st.sidebar.number_input("Firing Cost", value=50)
-salary_cost = st.sidebar.number_input("Salary Cost per Week", value=1000)
+salary_cost = st.sidebar.number_input("Salary Cost", value=1000)
 penalty_cost = st.sidebar.number_input("Penalty Cost for Unmet Demand", value=1000)
-overtime_cost = st.sidebar.number_input("Overtime Cost per Hour", value=20)
+overtime_cost = st.sidebar.number_input("Overtime Cost", value=50)
 initial_employees = st.sidebar.number_input("Initial Number of Employees", min_value=0, value=0)
-maxh = st.sidebar.number_input("Maximum Hiring per Week", min_value=1, value=10)
-maxf = st.sidebar.number_input("Maximum Firing per Week", min_value=1, value=5)
-overtime_rate = st.sidebar.number_input("Overtime Rate per Employee (Hours)", min_value=1, value=10)
-working_hours = st.sidebar.number_input("Working Hours per Employee per Week", min_value=1, value=40)
+maxh = st.sidebar.number_input("Maximum Hiring Number of Employees", min_value=1, value=10)
+maxf = st.sidebar.number_input("Maximum Firing Number of Employees", min_value=1, value=5)
+overtime_rate = st.sidebar.number_input("Overtime Rate per Employee", min_value=1, value=10)
+working_hours = st.sidebar.number_input("Working Hours per Employee", min_value=1, value=40)
 
-demand_range = st.sidebar.slider("Demand Range", min_value=10, max_value=500, value=(20, 200))
+demand_range = st.sidebar.slider("Demand Range", min_value=10, max_value=1000, value=(20, 200))
 random_demand = st.sidebar.checkbox("Generate Random Demand", value=True)
 
 if random_demand:
@@ -96,11 +98,37 @@ if st.button("Optimize"):
     st.write(f"Total Cost: {results['Total Cost']}")
 
     st.subheader("Details")
-    for detail in results["Details"]:
-        st.write(f"Week {detail['Week']}:")
-        st.write(f"  Demand: {detail['Demand']}")
-        st.write(f"  Hired: {detail['Hired']}")
-        st.write(f"  Fired: {detail['Fired']}")
-        st.write(f"  Employees: {detail['Employees']}")
-        st.write(f"  Overtime: {detail['Overtime']}")
-        st.write(f"  Unmet Demand: {detail['Unmet Demand']}")
+
+    # Convert results to a DataFrame for better visualization
+    details_df = pd.DataFrame(results["Details"])
+    
+    # Display results as a table
+    st.dataframe(details_df)
+    
+    # Line chart for demand, hired, fired, and employees
+    st.subheader("Weekly Workforce Overview")
+    chart = alt.Chart(details_df).transform_fold(
+        ["Demand", "Hired", "Fired", "Employees"],
+        as_=["Category", "Value"]
+    ).mark_line().encode(
+        x=alt.X("Week:O", title="Week"),
+        y=alt.Y("Value:Q", title="Count"),
+        color="Category:N",
+        tooltip=["Week", "Category", "Value"]
+    ).interactive()
+    
+    st.altair_chart(chart, use_container_width=True)
+    
+    # Bar chart for overtime and unmet demand
+    st.subheader("Overtime and Unmet Demand")
+    bar_chart = alt.Chart(details_df).transform_fold(
+        ["Overtime", "Unmet Demand"],
+        as_=["Category", "Value"]
+    ).mark_bar().encode(
+        x=alt.X("Week:O", title="Week"),
+        y=alt.Y("Value:Q", title="Hours"),
+        color="Category:N",
+        tooltip=["Week", "Category", "Value"]
+    ).interactive()
+    
+    st.altair_chart(bar_chart, use_container_width=True)
