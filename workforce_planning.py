@@ -2,7 +2,6 @@ import streamlit as st
 import random
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
 import pandas as pd
-import plotly.graph_objects as go
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost, 
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate, 
@@ -104,67 +103,5 @@ if st.button("Optimize"):
     
     # Display results as a table
     st.dataframe(details_df)
-
-    # Plotting the results
-
-    # 1. Interactive bar chart for number of Hired, Fired, and Employees each week
-    fig = go.Figure()
-
-    fig.add_trace(go.Bar(
-        x=details_df['Week'],
-        y=details_df['Hired'],
-        name='Hired',
-        marker_color='green'
-    ))
-    fig.add_trace(go.Bar(
-        x=details_df['Week'],
-        y=details_df['Fired'],
-        name='Fired',
-        marker_color='red'
-    ))
-
-    fig.update_layout(
-        title="Employees Hired and Fired Each Week",
-        xaxis_title="Week",
-        yaxis_title="Number of Employees",
-        barmode='group',
-        template='plotly_dark'
-    )
     
-    st.plotly_chart(fig)
 
-    # 2. Interactive line chart for Demand, Employees, Overtime, and Unmet Demand
-    fig = go.Figure()
-
-    fig.add_trace(go.Scatter(
-        x=details_df['Week'], 
-        y=details_df['Demand'], 
-        mode='lines+markers', 
-        name='Demand',
-        line=dict(color='blue')
-    ))
-    fig.add_trace(go.Scatter(
-        x=details_df['Week'],
-        y=details_df['Employees'] * working_hours, 
-        mode='lines+markers', 
-        name='Employees Capacity',
-        line=dict(color='orange', dash='dash')
-    ))
-    fig.add_trace(go.Scatter(
-        x=details_df['Week'],
-        y=details_df['Overtime'], 
-        mode='lines+markers', 
-        name='Overtime',
-        line=dict(color='purple', dash='dot')
-    ))
-    fig.add_trace(go.Scatter(
-        x=details_df['Week'],
-        y=details_df['Unmet Demand'], 
-        mode='lines+markers', 
-        name='Unmet Demand',
-        line=dict(color='red', dash='longdash')
-    ))
-
-    fig.update_layout(
-        title="Demand vs Employees and Overtime",
-        xaxis_t
