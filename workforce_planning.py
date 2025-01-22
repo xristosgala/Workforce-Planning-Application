@@ -130,5 +130,6 @@ if st.button("Optimize"):
         color="Category:N",
         tooltip=["Week", "Category", "Value"]
     ).interactive()
+
     
     st.altair_chart(bar_chart, use_container_width=True)
