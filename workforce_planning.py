@@ -104,25 +104,3 @@ if st.button("Optimize"):
     
     # Display results as a table
     st.dataframe(details_df)
-
-    # Create an interactive line chart for the Demand and Workforce Data
-    fig = go.Figure()
-
-    # Adding demand, employees, hired, fired, overtime, and unmet demand to the plot
-    fig.add_trace(go.Scatter(x=details_df['Week'], y=details_df['Demand'], mode='lines+markers', name='Demand', line=dict(color='blue')))
-    fig.add_trace(go.Scatter(x=details_df['Week'], y=details_df['Employees'], mode='lines+markers', name='Employees', line=dict(color='green')))
-    fig.add_trace(go.Scatter(x=details_df['Week'], y=details_df['Hired'], mode='lines+markers', name='Hired', line=dict(color='orange')))
-    fig.add_trace(go.Scatter(x=details_df['Week'], y=details_df['Fired'], mode='lines+markers', name='Fired', line=dict(color='red')))
-    fig.add_trace(go.Scatter(x=details_df['Week'], y=details_df['Overtime'], mode='lines+markers', name='Overtime', line=dict(color='purple')))
-    fig.add_trace(go.Scatter(x=details_df['Week'], y=details_df['Unmet Demand'], mode='lines+markers', name='Unmet Demand', line=dict(color='black')))
-
-    # Customize layout
-    fig.update_layout(
-        title="Workforce Planning: Demand and Workforce Overview",
-        xaxis_title="Week",
-        yaxis_title="Count",
-        template="plotly_dark"
-    )
-
-    # Display the plot
-    st.plotly_chart(fig)
