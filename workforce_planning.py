@@ -80,14 +80,14 @@ maxf = st.sidebar.number_input("Maximum Firing", min_value=1, value=1)
 overtime_rate = st.sidebar.number_input("Overtime Hours per Employee", min_value=1, value=10)
 working_hours = st.sidebar.number_input("Working Hours per Employee", min_value=1, value=40)
 budget = st.sidebar.number_input("Budget Constraint", min_value=0, value=10000)
-demand_range = st.sidebar.slider("Demand Range", min_value=10, max_value=1000, value=(20, 200))
+demand_range = st.sidebar.slider("Demand Range", min_value=1, max_value=1000, value=(20, 200))
 random_demand = st.sidebar.checkbox("Generate Random Demand", value=True)
-service_rate = st.sidebar.slider("Service Rate", min_value=0, max_value=1, value=0.95)
+service_rate = st.sidebar.slider("Service Rate", min_value=0.00, max_value=1.00, value=0.95)
 
 if random_demand:
     demand = [random.randint(demand_range[0], demand_range[1]) for _ in range(weeks)]
 else:
-    demand = [st.sidebar.number_input(f"Demand for Week {i+1}", min_value=0, value=50) for i in range(weeks)]
+    demand = [st.sidebar.number_input(f"Demand for Week {i+1}", min_value=0, value=random.randint(1,100) for i in range(weeks)]
 
 # Solve and Display Results
 if st.button("Optimize"):
