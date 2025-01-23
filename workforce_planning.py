@@ -128,3 +128,27 @@ if st.button("Optimize"):
     fig.update_layout(xaxis_title='Week', yaxis_title='Workforce/Demand',
                       title='Total Workforce vs. Demand', xaxis=dict(tickmode='array', tickvals=list(range(1, weeks+1))))
     st.plotly_chart(fig)
+
+    # Assuming these are your calculated costs
+    hiring_total_cost = sum(df['Hired']) * hiring_cost
+    firing_total_cost = sum(df['Fired']) * firing_cost
+    salary_total_cost = sum(df['Employees']) * salary_cost
+    overtime_total_cost = sum(df['Overtime']) * overtime_cost
+    penalty_total_cost = sum(df['Unmet Demand']) * penalty_cost
+    
+    # Calculate the total cost
+    total_cost = (hiring_total_cost + firing_total_cost + salary_total_cost +
+                  overtime_total_cost + penalty_total_cost)
+    
+    # Prepare data for the pie chart
+    costs = [hiring_total_cost, firing_total_cost, salary_total_cost,
+             overtime_total_cost, penalty_total_cost]
+    labels = ['Hiring Cost', 'Firing Cost', 'Salary Cost',
+              'Overtime Cost', 'Penalty Cost']
+    
+    # Create the pie chart
+    fig = go.Figure(data=[go.Pie(labels=labels, values=costs, textinfo='percent+label')])
+    fig.update_layout(title='Cost Distribution as Percentages')
+    
+    # Display the pie chart in Streamlit
+    st.plotly_chart(fig)
