@@ -44,6 +44,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     # Solve the problem
     problem.solve()
 
+    objective_cost = 0
     for i in range(weeks):
         objective_cost += U[i].value() * penalty_cost
       
