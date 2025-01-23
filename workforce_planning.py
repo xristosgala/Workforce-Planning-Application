@@ -35,9 +35,10 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
         problem += F[i] <= maxf, f"Firing_Capacity_{i}"
         problem += O[i] <= E[i] * overtime_rate, f"Overtime_{i}"
         problem += U[i] == demand[i] - E[i] * working_hours - O[i], f"Unmet_Demand_{i}"
+    
     # Budget constraint
     total_cost = lpSum(H[i]*hiring_cost + F[i]*firing_cost + E[i]*salary_cost +
-                       O[i]*overtime_cost + U[i]*penalty_cost for i in range(weeks))
+                       O[i]*overtime_cost for i in range(weeks))
     problem += total_cost <= budget, "Budget_Constraint"
 
     # Solve the problem
