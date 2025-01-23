@@ -103,7 +103,7 @@ if st.button("Optimize"):
     
         # Convert results to DataFrame
         df = pd.DataFrame(results["Details"])
-        st.write("Optimization Details:")
+        st.write("Results in a Tabular Form:")
         st.dataframe(df)
     
         # Interactive Plot: Hired and Fired Employees vs. Week
