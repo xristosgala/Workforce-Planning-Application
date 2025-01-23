@@ -91,64 +91,68 @@ if st.button("Optimize"):
                                        working_hours, demand)
 
     st.subheader("Optimization Results")
-    st.write(f"Status: {results['Status']}")
-    st.write(f"Total Cost: {results['Total Cost']}")
-
-    # Convert results to DataFrame
-    df = pd.DataFrame(results["Details"])
-    st.write("Optimization Details:")
-    st.dataframe(df)
-
-    # Interactive Plot: Hired and Fired Employees vs. Week
-    st.subheader("Hired and Fired Employees vs. Week")
-    fig = go.Figure()
-    fig.add_trace(go.Bar(x=df['Week'], y=df['Hired'], name='Hired', marker_color='green'))
-    fig.add_trace(go.Bar(x=df['Week'], y=df['Fired'], name='Fired', marker_color='red'))
-    fig.update_layout(barmode='group', xaxis_title='Week', yaxis_title='Count',
-                      title='Hired and Fired Employees per Week')
-    st.plotly_chart(fig)
-
-    # Interactive Plot: Overtime Employees vs Unmet Demand
-    st.subheader("Overtime Employees vs Unmet Demand")
-    fig = go.Figure()
-    fig.add_trace(go.Bar(x=df['Week'], y=df['Overtime'], name='Overtime', marker_color='blue'))
-    fig.add_trace(go.Bar(x=df['Week'], y=df['Unmet Demand'], name='Unmet Demand', marker_color='orange'))
-    fig.update_layout(barmode='group', xaxis_title='Week', yaxis_title='Count',
-                      title='Overtime Employees vs Unmet Demand per Week')
-    st.plotly_chart(fig)
-
-    # Interactive Plot: Total Workforce vs. Demand
-    st.subheader("Total Workforce (Employees + Overtime) vs. Demand")
-    df['Total Workforce'] = df['Employees'] * working_hours + df['Overtime']
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=df['Week'], y=df['Total Workforce'], mode='lines+markers',
-                             name='Total Workforce', line=dict(color='green')))
-    fig.add_trace(go.Scatter(x=df['Week'], y=df['Demand'], mode='lines+markers',
-                             name='Demand', line=dict(color='red')))
-    fig.update_layout(xaxis_title='Week', yaxis_title='Workforce/Demand',
-                      title='Total Workforce vs. Demand', xaxis=dict(tickmode='array', tickvals=list(range(1, weeks+1))))
-    st.plotly_chart(fig)
-
-    # Assuming these are your calculated costs
-    hiring_total_cost = sum(df['Hired']) * hiring_cost
-    firing_total_cost = sum(df['Fired']) * firing_cost
-    salary_total_cost = sum(df['Employees']) * salary_cost
-    overtime_total_cost = sum(df['Overtime']) * overtime_cost
-    penalty_total_cost = sum(df['Unmet Demand']) * penalty_cost
+    if results['Status']=='Optimal':
+        st.success(f"Status: {results['Status']}")
+        st.write(f"Total Cost: {results['Total Cost']}")
     
-    # Calculate the total cost
-    total_cost = (hiring_total_cost + firing_total_cost + salary_total_cost +
-                  overtime_total_cost + penalty_total_cost)
+        # Convert results to DataFrame
+        df = pd.DataFrame(results["Details"])
+        st.write("Optimization Details:")
+        st.dataframe(df)
     
-    # Prepare data for the pie chart
-    costs = [hiring_total_cost, firing_total_cost, salary_total_cost,
-             overtime_total_cost, penalty_total_cost]
-    labels = ['Hiring Cost', 'Firing Cost', 'Salary Cost',
-              'Overtime Cost', 'Penalty Cost']
+        # Interactive Plot: Hired and Fired Employees vs. Week
+        st.subheader("Hired and Fired Employees vs. Week")
+        fig = go.Figure()
+        fig.add_trace(go.Bar(x=df['Week'], y=df['Hired'], name='Hired', marker_color='green'))
+        fig.add_trace(go.Bar(x=df['Week'], y=df['Fired'], name='Fired', marker_color='red'))
+        fig.update_layout(barmode='group', xaxis_title='Week', yaxis_title='Count',
+                          title='Hired and Fired Employees per Week')
+        st.plotly_chart(fig)
     
-    # Create the pie chart
-    fig = go.Figure(data=[go.Pie(labels=labels, values=costs, textinfo='percent+label')])
-    fig.update_layout(title='Cost Distribution as Percentages')
+        # Interactive Plot: Overtime Employees vs Unmet Demand
+        st.subheader("Overtime Employees vs Unmet Demand")
+        fig = go.Figure()
+        fig.add_trace(go.Bar(x=df['Week'], y=df['Overtime'], name='Overtime', marker_color='blue'))
+        fig.add_trace(go.Bar(x=df['Week'], y=df['Unmet Demand'], name='Unmet Demand', marker_color='orange'))
+        fig.update_layout(barmode='group', xaxis_title='Week', yaxis_title='Count',
+                          title='Overtime Employees vs Unmet Demand per Week')
+        st.plotly_chart(fig)
     
-    # Display the pie chart in Streamlit
-    st.plotly_chart(fig)
+        # Interactive Plot: Total Workforce vs. Demand
+        st.subheader("Total Workforce (Employees + Overtime) vs. Demand")
+        df['Total Workforce'] = df['Employees'] * working_hours + df['Overtime']
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=df['Week'], y=df['Total Workforce'], mode='lines+markers',
+                                 name='Total Workforce', line=dict(color='green')))
+        fig.add_trace(go.Scatter(x=df['Week'], y=df['Demand'], mode='lines+markers',
+                                 name='Demand', line=dict(color='red')))
+        fig.update_layout(xaxis_title='Week', yaxis_title='Workforce/Demand',
+                          title='Total Workforce vs. Demand', xaxis=dict(tickmode='array', tickvals=list(range(1, weeks+1))))
+        st.plotly_chart(fig)
+    
+        # Assuming these are your calculated costs
+        hiring_total_cost = sum(df['Hired']) * hiring_cost
+        firing_total_cost = sum(df['Fired']) * firing_cost
+        salary_total_cost = sum(df['Employees']) * salary_cost
+        overtime_total_cost = sum(df['Overtime']) * overtime_cost
+        penalty_total_cost = sum(df['Unmet Demand']) * penalty_cost
+        
+        # Calculate the total cost
+        total_cost = (hiring_total_cost + firing_total_cost + salary_total_cost +
+                      overtime_total_cost + penalty_total_cost)
+        
+        # Prepare data for the pie chart
+        costs = [hiring_total_cost, firing_total_cost, salary_total_cost,
+                 overtime_total_cost, penalty_total_cost]
+        labels = ['Hiring Cost', 'Firing Cost', 'Salary Cost',
+                  'Overtime Cost', 'Penalty Cost']
+        
+        # Create the pie chart
+        fig = go.Figure(data=[go.Pie(labels=labels, values=costs, textinfo='percent+label')])
+        fig.update_layout(title='Cost Distribution as Percentages')
+        
+        # Display the pie chart in Streamlit
+        st.plotly_chart(fig)
+
+    else:
+        st.error(f"Status" {results['Status']"})
