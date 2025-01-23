@@ -101,8 +101,8 @@ if st.button("Optimize"):
     # Plot: Hired and Fired Employees vs. Week
     st.subheader("Hired and Fired Employees vs. Week")
     plt.figure(figsize=(10, 5))
-    plt.bar(df['Week'] - 0.2, df['Hired'], width=0.4, label='Hired', color='green')
-    plt.bar(df['Week'] + 0.2, df['Fired'], width=0.4, label='Fired', color='red')
+    plt.bar(df['Week'], df['Hired'], label='Hired', color='green')
+    plt.bar(df['Week'], df['Fired'], label='Fired', color='red')
     plt.xlabel('Week')
     plt.ylabel('Count')
     plt.title('Hired and Fired Employees per Week')
