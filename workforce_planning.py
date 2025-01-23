@@ -1,8 +1,9 @@
 import streamlit as st
 import random
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
-import matplotlib.pyplot as plt
 import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost,
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate,
@@ -98,43 +99,36 @@ if st.button("Optimize"):
     st.write("Optimization Details:")
     st.dataframe(df)
 
-    # Plot: Hired and Fired Employees vs. Week
+    # Interactive Plot: Hired and Fired Employees vs. Week
     st.subheader("Hired and Fired Employees vs. Week")
-    plt.figure(figsize=(10, 5))
-    plt.bar(df['Week'] - 0.2, df['Hired'], width=0.4, label='Hired', color='green')
-    plt.bar(df['Week'] + 0.2, df['Fired'], width=0.4, label='Fired', color='red')
-    plt.xlabel('Week')
-    plt.ylabel('Count')
-    plt.title('Hired and Fired Employees per Week')
-    plt.legend()
-    st.pyplot(plt)
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=df['Week'], y=df['Hired'], name='Hired', marker_color='green'))
+    fig.add_trace(go.Bar(x=df['Week'], y=df['Fired'], name='Fired', marker_color='red'))
+    fig.update_layout(barmode='group', xaxis_title='Week', yaxis_title='Count',
+                      title='Hired and Fired Employees per Week')
+    st.plotly_chart(fig)
 
-    # Plot: Overtime vs. Week
+    # Interactive Plot: Overtime vs. Week
     st.subheader("Overtime Hours vs. Week")
-    plt.figure(figsize=(10, 5))
-    plt.bar(df['Week'], df['Overtime'], color='blue')
-    plt.xlabel('Week')
-    plt.ylabel('Overtime Hours')
-    plt.title('Overtime Hours per Week')
-    st.pyplot(plt)
+    fig = px.bar(df, x='Week', y='Overtime', title="Overtime Hours per Week",
+                 labels={'Overtime': 'Overtime Hours', 'Week': 'Week'})
+    st.plotly_chart(fig)
 
-    # Plot: Unmet Demand vs. Week
+    # Interactive Plot: Unmet Demand vs. Week
     st.subheader("Unmet Demand vs. Week")
-    plt.figure(figsize=(10, 5))
-    plt.bar(df['Week'], df['Unmet Demand'], color='orange')
-    plt.xlabel('Week')
-    plt.ylabel('Unmet Demand')
-    plt.title('Unmet Demand per Week')
-    st.pyplot(plt)
+    fig = px.bar(df, x='Week', y='Unmet Demand', title="Unmet Demand per Week",
+                 labels={'Unmet Demand': 'Unmet Demand', 'Week': 'Week'},
+                 color_discrete_sequence=['orange'])
+    st.plotly_chart(fig)
 
-    # Plot: Total Workforce vs. Demand
+    # Interactive Plot: Total Workforce vs. Demand
     st.subheader("Total Workforce (Employees + Overtime) vs. Demand")
-    total_workforce = df['Employees'] * working_hours + df['Overtime']
-    plt.figure(figsize=(10, 5))
-    plt.plot(df['Week'], total_workforce, label='Total Workforce', marker='o', color='green')
-    plt.plot(df['Week'], df['Demand'], label='Demand', marker='x', color='red')
-    plt.xlabel('Week')
-    plt.ylabel('Workforce/Demand')
-    plt.title('Total Workforce vs. Demand')
-    plt.legend()
-    st.pyplot(plt)
+    df['Total Workforce'] = df['Employees'] * working_hours + df['Overtime']
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=df['Week'], y=df['Total Workforce'], mode='lines+markers',
+                             name='Total Workforce', line=dict(color='green')))
+    fig.add_trace(go.Scatter(x=df['Week'], y=df['Demand'], mode='lines+markers',
+                             name='Demand', line=dict(color='red')))
+    fig.update_layout(xaxis_title='Week', yaxis_title='Workforce/Demand',
+                      title='Total Workforce vs. Demand')
+    st.plotly_chart(fig)
