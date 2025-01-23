@@ -1,11 +1,10 @@
+%%writefile workforce_planning.py
 import streamlit as st
 import random
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
 import matplotlib.pyplot as plt
 import pandas as pd
-import plotly.express as px
 
-# Workforce Planning Solver Function
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost,
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate,
                               working_hours, demand):
@@ -20,8 +19,8 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     U = [LpVariable(f"U_{i}", lowBound=0, cat='Integer') for i in range(weeks)]
 
     # Objective Function
-    problem += (lpSum(H[i] * hiring_cost + F[i] * firing_cost + E[i] * salary_cost +
-                      O[i] * overtime_cost + U[i] * penalty_cost for i in range(weeks))), "Total_Cost"
+    problem += (lpSum(H[i]*hiring_cost + F[i]*firing_cost + E[i]*salary_cost +
+                      O[i]*overtime_cost + U[i]*penalty_cost for i in range(weeks))), "Total_Cost"
 
     # Constraints
     for i in range(weeks):
@@ -31,7 +30,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
             problem += E[i] == E[i-1] + H[i] - F[i], f"Balance_{i}"
 
         # Demand constraint
-        problem += E[i] * working_hours + O[i] + U[i] == demand[i], f"Demand_{i}"
+        problem += E[i]*working_hours + O[i] + U[i] == demand[i], f"Demand_{i}"
         problem += H[i] <= maxh, f"Hiring_Capacity_{i}"
         problem += F[i] <= maxf, f"Firing_Capacity_{i}"
         problem += O[i] <= E[i] * overtime_rate, f"Overtime_{i}"
@@ -58,7 +57,6 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
         })
 
     return results
-
 
 # Streamlit App
 st.title("Workforce Planning Optimization")
@@ -96,42 +94,48 @@ if st.button("Optimize"):
     st.write(f"Status: {results['Status']}")
     st.write(f"Total Cost: {results['Total Cost']}")
 
-    st.subheader("Details")
-    details_df = pd.DataFrame(results["Details"])
-    st.dataframe(details_df)
+    # Convert results to DataFrame
+    df = pd.DataFrame(results["Details"])
+    st.write("Optimization Details:")
+    st.dataframe(df)
 
-    # Visualization: Demand vs Workforce Supply
-    st.subheader("Demand vs Workforce Supply")
-    plt.figure(figsize=(10, 6))
-    plt.plot(details_df["Week"], details_df["Demand"], label="Demand", marker='o')
-    plt.plot(details_df["Week"], details_df["Employees"] * working_hours, label="Supply (Workforce Hours)", marker='x')
-    plt.fill_between(details_df["Week"], 
-                     details_df["Employees"] * working_hours, 
-                     details_df["Employees"] * working_hours + details_df["Overtime"],
-                     color='gray', alpha=0.2, label="Overtime Hours")
-    plt.bar(details_df["Week"], details_df["Unmet Demand"], label="Unmet Demand", color="red", alpha=0.5)
-    plt.xlabel("Week")
-    plt.ylabel("Hours")
-    plt.title("Demand vs Workforce Supply")
+    # Plot: Hired and Fired Employees vs. Week
+    st.subheader("Hired and Fired Employees vs. Week")
+    plt.figure(figsize=(10, 5))
+    plt.bar(df['Week'] - 0.2, df['Hired'], width=0.4, label='Hired', color='green')
+    plt.bar(df['Week'] + 0.2, df['Fired'], width=0.4, label='Fired', color='red')
+    plt.xlabel('Week')
+    plt.ylabel('Count')
+    plt.title('Hired and Fired Employees per Week')
     plt.legend()
     st.pyplot(plt)
 
-    # Visualization: Cost Breakdown per Week
-    st.subheader("Weekly Cost Breakdown")
-    costs_df = details_df.copy()
-    costs_df["Hiring Cost"] = costs_df["Hired"] * hiring_cost
-    costs_df["Firing Cost"] = costs_df["Fired"] * firing_cost
-    costs_df["Salary Cost"] = costs_df["Employees"] * salary_cost
-    costs_df["Overtime Cost"] = costs_df["Overtime"] * overtime_cost
-    costs_df["Penalty Cost"] = costs_df["Unmet Demand"] * penalty_cost
+    # Plot: Overtime vs. Week
+    st.subheader("Overtime Hours vs. Week")
+    plt.figure(figsize=(10, 5))
+    plt.bar(df['Week'], df['Overtime'], color='blue')
+    plt.xlabel('Week')
+    plt.ylabel('Overtime Hours')
+    plt.title('Overtime Hours per Week')
+    st.pyplot(plt)
 
-    cost_columns = ["Hiring Cost", "Firing Cost", "Salary Cost", "Overtime Cost", "Penalty Cost"]
-    cost_plot_df = costs_df[["Week"] + cost_columns].melt(id_vars="Week", var_name="Cost Type", value_name="Cost")
-    st.bar_chart(cost_plot_df.pivot(index="Week", columns="Cost Type", values="Cost"))
+    # Plot: Unmet Demand vs. Week
+    st.subheader("Unmet Demand vs. Week")
+    plt.figure(figsize=(10, 5))
+    plt.bar(df['Week'], df['Unmet Demand'], color='orange')
+    plt.xlabel('Week')
+    plt.ylabel('Unmet Demand')
+    plt.title('Unmet Demand per Week')
+    st.pyplot(plt)
 
-    # Interactive Plotly Chart: Workforce Actions
-    st.subheader("Workforce Actions (Hired, Fired, Overtime)")
-    action_plot_df = details_df[["Week", "Hired", "Fired", "Overtime"]].melt(id_vars="Week", var_name="Action", value_name="Count")
-    fig = px.bar(action_plot_df, x="Week", y="Count", color="Action", barmode="stack",
-                 title="Workforce Actions Over Time")
-    st.plotly_chart(fig)
+    # Plot: Total Workforce vs. Demand
+    st.subheader("Total Workforce (Employees + Overtime) vs. Demand")
+    total_workforce = df['Employees'] * working_hours + df['Overtime']
+    plt.figure(figsize=(10, 5))
+    plt.plot(df['Week'], total_workforce, label='Total Workforce', marker='o', color='green')
+    plt.plot(df['Week'], df['Demand'], label='Demand', marker='x', color='red')
+    plt.xlabel('Week')
+    plt.ylabel('Workforce/Demand')
+    plt.title('Total Workforce vs. Demand')
+    plt.legend()
+    st.pyplot(plt)
