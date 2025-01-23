@@ -108,13 +108,13 @@ if st.button("Optimize"):
                       title='Hired and Fired Employees per Week')
     st.plotly_chart(fig)
 
-    # Interactive Plot: Overtime Employees vs Demand
-    st.subheader("Overtime Employees vs Demand")
+    # Interactive Plot: Overtime Employees vs Unmet Demand
+    st.subheader("Overtime Employees vs Unmet Demand")
     fig = go.Figure()
     fig.add_trace(go.Bar(x=df['Week'], y=df['Overtime'], name='Overtime', marker_color='blue'))
-    fig.add_trace(go.Bar(x=df['Week'], y=df['Demand'], name='Demand', marker_color='orange'))
+    fig.add_trace(go.Bar(x=df['Week'], y=df['Unmet Demand'], name='Unmet Demand', marker_color='orange'))
     fig.update_layout(barmode='group', xaxis_title='Week', yaxis_title='Count',
-                      title='Overtime Employees vs Demand per Week')
+                      title='Overtime Employees vs Unmet Demand per Week')
     st.plotly_chart(fig)
 
     # Interactive Plot: Total Workforce vs. Demand
