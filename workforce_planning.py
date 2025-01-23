@@ -155,4 +155,4 @@ if st.button("Optimize"):
         st.plotly_chart(fig)
 
     else:
-        st.error(f"Status: {results['Status']"})
+        st.error(f"Status: {results['Status']}")
