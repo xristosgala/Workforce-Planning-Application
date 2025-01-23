@@ -126,5 +126,5 @@ if st.button("Optimize"):
     fig.add_trace(go.Scatter(x=df['Week'], y=df['Demand'], mode='lines+markers',
                              name='Demand', line=dict(color='red')))
     fig.update_layout(xaxis_title='Week', yaxis_title='Workforce/Demand',
-                      title='Total Workforce vs. Demand', xaxis=dict(tickmode='array', tickvals=list(weeks)))
+                      title='Total Workforce vs. Demand', xaxis=dict(tickmode='array', tickvals=list(range(1, weeks+1))))
     st.plotly_chart(fig)
