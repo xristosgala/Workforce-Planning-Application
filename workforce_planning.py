@@ -107,16 +107,14 @@ if st.button("Optimize"):
         st.dataframe(df)
     
         # Interactive Plot: Hired and Fired Employees vs. Week
-        st.subheader("Hired and Fired Employees vs. Week")
         fig = go.Figure()
         fig.add_trace(go.Bar(x=df['Week'], y=df['Hired'], name='Hired', marker_color='green'))
         fig.add_trace(go.Bar(x=df['Week'], y=df['Fired'], name='Fired', marker_color='red'))
         fig.update_layout(barmode='group', xaxis_title='Week', yaxis_title='Count',
-                          title='Hired and Fired Employees per Week')
+                          title='Hired vs Fired Employees per Week')
         st.plotly_chart(fig)
     
         # Interactive Plot: Overtime Employees vs Unmet Demand
-        st.subheader("Overtime Employees vs Unmet Demand")
         fig = go.Figure()
         fig.add_trace(go.Bar(x=df['Week'], y=df['Overtime'], name='Overtime', marker_color='blue'))
         fig.add_trace(go.Bar(x=df['Week'], y=df['Unmet Demand'], name='Unmet Demand', marker_color='orange'))
@@ -125,7 +123,6 @@ if st.button("Optimize"):
         st.plotly_chart(fig)
     
         # Interactive Plot: Total Workforce vs. Demand
-        st.subheader("Total Workforce (Employees + Overtime) vs. Demand")
         df['Total Workforce'] = df['Employees'] * working_hours + df['Overtime']
         fig = go.Figure()
         fig.add_trace(go.Scatter(x=df['Week'], y=df['Total Workforce'], mode='lines+markers',
@@ -133,7 +130,7 @@ if st.button("Optimize"):
         fig.add_trace(go.Scatter(x=df['Week'], y=df['Demand'], mode='lines+markers',
                                  name='Demand', line=dict(color='red')))
         fig.update_layout(xaxis_title='Week', yaxis_title='Workforce/Demand',
-                          title='Total Workforce vs. Demand', xaxis=dict(tickmode='array', tickvals=list(range(1, weeks+1))))
+                          title='Total Workforce (Employees + Overtime) vs. Demand', xaxis=dict(tickmode='array', tickvals=list(range(1, weeks+1))))
         st.plotly_chart(fig)
     
         # Assuming these are your calculated costs
@@ -155,7 +152,7 @@ if st.button("Optimize"):
         
         # Create the pie chart
         fig = go.Figure(data=[go.Pie(labels=labels, values=costs, textinfo='percent+label')])
-        fig.update_layout(title='Cost Distribution as Percentages')
+        fig.update_layout(title='Cost Distribution')
         
         # Display the pie chart in Streamlit
         st.plotly_chart(fig)
