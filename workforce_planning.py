@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost,
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate,
-                              working_hours, demand):
+                              working_hours, demand, budget):
     # Define the problem
     problem = LpProblem("Workforce_Planning", LpMinimize)
 
@@ -35,6 +35,10 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
         problem += F[i] <= maxf, f"Firing_Capacity_{i}"
         problem += O[i] <= E[i] * overtime_rate, f"Overtime_{i}"
         problem += U[i] >= demand[i] - E[i] * working_hours - O[i], f"Unmet_Demand_{i}"
+    # Budget constraint
+    total_cost = lpSum(H[i]*hiring_cost + F[i]*firing_cost + E[i]*salary_cost +
+                       O[i]*overtime_cost + U[i]*penalty_cost for i in range(weeks))
+    problem += total_cost <= budget, "Budget_Constraint"
 
     # Solve the problem
     problem.solve()
@@ -62,7 +66,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
 st.title("Workforce Planning Optimization")
 
 # Input Fields
-st.sidebar.header("Input Parameters")
+st.sidebar.header("Input Parameters per Week")
 weeks = st.sidebar.number_input("Number of Weeks", min_value=1, max_value=52, value=4)
 
 hiring_cost = st.sidebar.number_input("Hiring Cost", value=100)
@@ -73,8 +77,10 @@ overtime_cost = st.sidebar.number_input("Overtime Cost per Hour", value=20)
 initial_employees = st.sidebar.number_input("Initial Number of Employees", min_value=0, value=0)
 maxh = st.sidebar.number_input("Maximum Hiring per Week", min_value=1, value=10)
 maxf = st.sidebar.number_input("Maximum Firing per Week", min_value=1, value=5)
-overtime_rate = st.sidebar.number_input("Overtime Rate per Employee (Hours)", min_value=1, value=10)
-working_hours = st.sidebar.number_input("Working Hours per Employee per Week", min_value=1, value=40)
+overtime_rate = st.sidebar.number_input("Overtime Hours per Employee (Hours)", min_value=1, value=10)
+working_hours = st.sidebar.number_input("Working Hours per Employee", min_value=1, value=40)
+budget = st.sidebar.number_input("Budget Constraint", min_value=0, value=10000)
+
 
 demand_range = st.sidebar.slider("Demand Range", min_value=10, max_value=500, value=(20, 200))
 random_demand = st.sidebar.checkbox("Generate Random Demand", value=True)
@@ -88,7 +94,7 @@ else:
 if st.button("Optimize"):
     results = solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost,
                                        overtime_cost, initial_employees, maxh, maxf, overtime_rate,
-                                       working_hours, demand)
+                                       working_hours, demand, budget)
 
     st.subheader("Optimization Results")
     if results['Status']=='Optimal':
