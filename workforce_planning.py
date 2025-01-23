@@ -45,11 +45,11 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     problem.solve()
 
     for i in range(weeks):
-        objective_cost += U[i] * penalty_cost
+        objective_cost += U[i].value * penalty_cost
       
     results = {
         "Status": LpStatus[problem.status],
-        "Total Cost": problem.objective.value() * objective_cost,
+        "Total Cost": problem.objective.value() + objective_cost,
         "Details": []
     }
 
