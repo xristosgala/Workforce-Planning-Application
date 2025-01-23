@@ -44,20 +44,13 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     # Solve the problem
     problem.solve()
 
-    # Assuming these are your calculated costs
-    hiring_total_cost = sum(df['Hired']) * hiring_cost
-    firing_total_cost = sum(df['Fired']) * firing_cost
-    salary_total_cost = sum(df['Employees']) * salary_cost
-    overtime_total_cost = sum(df['Overtime']) * overtime_cost
-    penalty_total_cost = sum(df['Unmet Demand']) * penalty_cost
-    
-    # Calculate the total cost
-    total_cost = (hiring_total_cost + firing_total_cost + salary_total_cost +
-                  overtime_total_cost + penalty_total_cost)
-
+    objective_cost
+    for i in range(weeks):
+        objective_cost += U[i] * penalty_cost
+      
     results = {
         "Status": LpStatus[problem.status],
-        "Total Cost": total_cost,
+        "Total Cost": problem.objective.value() - objective_cost,
         "Details": []
     }
 
