@@ -34,7 +34,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
         problem += H[i] <= maxh, f"Hiring_Capacity_{i}"
         problem += F[i] <= maxf, f"Firing_Capacity_{i}"
         problem += O[i] <= E[i] * overtime_rate, f"Overtime_{i}"
-        problem += U[i] == demand[i] - E[i] * working_hours - O[i], f"Unmet_Demand_{i}"
+        problem += U[i] <= demand[i] - E[i] * working_hours - O[i], f"Unmet_Demand_{i}"
     
     # Budget constraint
     total_cost = lpSum(H[i]*hiring_cost + F[i]*firing_cost + E[i]*salary_cost +
@@ -70,10 +70,10 @@ st.title("Workforce Planning Optimization")
 st.sidebar.header("Input Parameters per Week")
 weeks = st.sidebar.number_input("Number of Weeks", min_value=1, max_value=52, value=4)
 
-hiring_cost = st.sidebar.number_input("Hiring Cost", value=50)
-firing_cost = st.sidebar.number_input("Firing Cost", value=20)
+hiring_cost = st.sidebar.number_input("Hiring Cost", value=100)
+firing_cost = st.sidebar.number_input("Firing Cost", value=50)
 salary_cost = st.sidebar.number_input("Salary Cost", value=250)
-penalty_cost = st.sidebar.number_input("Penalty Cost for Unmet Demand", value=20)
+penalty_cost = st.sidebar.number_input("Penalty for Unmet Demand", value=20)
 overtime_cost = st.sidebar.number_input("Overtime Cost", value=75)
 initial_employees = st.sidebar.number_input("Initial Number of Employees", min_value=0, value=0)
 maxh = st.sidebar.number_input("Maximum Hiring", min_value=1, value=2)
