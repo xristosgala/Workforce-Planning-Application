@@ -1,4 +1,3 @@
-%%writefile workforce_planning.py
 import streamlit as st
 import random
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
