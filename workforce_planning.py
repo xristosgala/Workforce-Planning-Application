@@ -71,13 +71,13 @@ weeks = st.sidebar.number_input("Number of Weeks", min_value=1, max_value=52, va
 
 hiring_cost = st.sidebar.number_input("Hiring Cost", value=100)
 firing_cost = st.sidebar.number_input("Firing Cost", value=50)
-salary_cost = st.sidebar.number_input("Salary Cost per Week", value=1000)
+salary_cost = st.sidebar.number_input("Salary Cost", value=1000)
 penalty_cost = st.sidebar.number_input("Penalty Cost for Unmet Demand", value=1000)
-overtime_cost = st.sidebar.number_input("Overtime Cost per Hour", value=20)
+overtime_cost = st.sidebar.number_input("Overtime Cost", value=20)
 initial_employees = st.sidebar.number_input("Initial Number of Employees", min_value=0, value=0)
-maxh = st.sidebar.number_input("Maximum Hiring per Week", min_value=1, value=10)
-maxf = st.sidebar.number_input("Maximum Firing per Week", min_value=1, value=5)
-overtime_rate = st.sidebar.number_input("Overtime Hours per Employee (Hours)", min_value=1, value=10)
+maxh = st.sidebar.number_input("Maximum Hiring", min_value=1, value=10)
+maxf = st.sidebar.number_input("Maximum Firing", min_value=1, value=5)
+overtime_rate = st.sidebar.number_input("Overtime Hours per Employee", min_value=1, value=10)
 working_hours = st.sidebar.number_input("Working Hours per Employee", min_value=1, value=40)
 budget = st.sidebar.number_input("Budget Constraint", min_value=0, value=10000)
 
