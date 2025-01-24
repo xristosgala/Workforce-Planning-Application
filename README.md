@@ -1,1 +1,4 @@
-# Workforce-Planning
+# Workforce-Planning Application
+
+## Overview
+This application involves a Workforce Planning Problem using Linear Programming (LP) to optimize the decisions of hiring, firing and maintaining employees while minimizing costs. It integrates multiple constraints such as maximum number of hired and fired employees, budget limit, demand satisfaction, overtime condition and unmet demand limit, all to ensure that the planning system runs efficiently. The problem is solved using PuLP (a Python library for LP problems) and results are visualized using Streamlit for an interactive web-based experience. Additionally, the solution includes various plots allowing the user to gain informative insights. The app can be accessed via this link: [https://optimized-transportation-allocation-system-and-route-mapping.streamlit.app/](https://workforce-planning-scmzo5wmkrecgorpzupb3h.streamlit.app/)
