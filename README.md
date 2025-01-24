@@ -52,7 +52,7 @@ The application solves a Linear Programming (LP) model with the following featur
 ## Mathematical Formulation
 
 ### **Indexes**
-- $i$: Week index (1, 2, ..., m$).
+- $i$: Week index (1, 2, ..., $m$).
 
 ### **Parameters**
 - $D_i$: Weekly demand (in hours) at week $i$.
@@ -81,7 +81,7 @@ The application solves a Linear Programming (LP) model with the following featur
 ### **Objective Function**
 Minimize total cost:
 $
-Z = \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} + U_i \cdot \text{penalty\_cost} \big)
+\min Z = \sum_{i=1}^{m} H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} + U_i \cdot \text{penalty\_cost} \big)
 $
 
 ### **Constraints**
