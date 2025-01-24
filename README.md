@@ -81,7 +81,7 @@ The application solves a Linear Programming (LP) model with the following featur
 ### **Objective Function**
 Minimize total cost:
 $$
-\min Z = \sum_{i=1}^{m} H_i \cdot \text{hiring\_cost} + F_i \cdot firing\_cost + E_i \cdot salary\_cost + O_i \cdot overtime\_cost + U_i \cdot penalty\_cost
+\min Z = \sum_{i=1}^{m} H_i \cdot hiring + F_i \cdot firing + E_i \cdot salary + O_i \cdot overtime + U_i \cdot penalty
 $$
 
 ### **Constraints**
