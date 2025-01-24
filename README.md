@@ -57,19 +57,19 @@ The application solves a Linear Programming (LP) model with the following featur
 ### **Parameters**
 - $D_i$: Weekly demand (in hours) at week $i$.
 - **Costs:**
-  - `hiringC`: Cost to hire one employee per week.
-  - `firingC`: Cost to fire one employee per week.
-  - `salaryC`: Cost to maintain one employee per week.
-  - `penaltyC`: Cost for unmet demand per week.
-  - `overtimeC`: Cost of overtime hours per week.
+  - `hiring_cost`: Cost to hire one employee per week.
+  - `firing_cost`: Cost to fire one employee per week.
+  - `salary_cost`: Cost to maintain one employee per week.
+  - `penalty_cost`: Cost for unmet demand per week.
+  - `overtime_cost`: Cost of overtime hours per week.
 - **Employee Details:**
-  - `employees0`: Initial workforce at week 1.
+  - `initial_employees`: Initial workforce at week 1.
   - `maxh`: Maximum number of employees that can be hired per week.
   - `maxf`: Maximum number of employees that can be fired per week.
-  - `overtimeR`: Maximum overtime hours per employee.
-  - `workingH`: Maximum regular working hours per employee.
+  - `overtime_rate`: Maximum overtime hours per employee.
+  - `working_hours`: Maximum regular working hours per employee.
 - `budget`: Maximum budget available.
-- `serviceR`: Fraction of demand that must be met each week.
+- `service_rate`: Fraction of demand that must be met each week.
 
 ### **Decision Variables**
 - $H_i$: Number of employees hired in week $i$.
@@ -82,7 +82,7 @@ The application solves a Linear Programming (LP) model with the following featur
 Minimize the total cost:
 
 $$
-\min Z = \sum_{i=1}^{m} H_i \cdot \text{hiringC} + F_i \cdot \text{firingC} + E_i \cdot \text{salaryC} + O_i \cdot \text{overtimeC} + U_i \cdot \text{penaltyC}
+\min Z = \sum_{i=1}^{m} H_i \cdot hiring_cost + F_i \cdot firing_cost + E_i \cdot salary_cost + O_i \cdot overtime_cost + U_i \cdot penalty_cost
 $$
 
 ---
@@ -90,11 +90,13 @@ $$
 ### **Constraints**:
 
 1. **Employee Balance**:
-For week 1:  
+- For week 1:  
+
 $$ 
-E_1 = \text{employee0} + H_1 - F_1 
+E_1 = initial_employees + H_1 - F_1 
 $$
-For subsequent weeks (\(i > 1\)):
+
+-For subsequent weeks (\(i > 1\)):
 
 $$ 
 E_i = E_{i-1} + H_i - F_i 
@@ -102,26 +104,30 @@ $$
 
 3. **Demand Satisfaction**:  
 Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
+
 $$ 
-E_i \cdot workingH + O_i + U_i \geq D_i \cdot serviceR
+E_i \cdot working_hours + O_i + U_i \geq D_i \cdot serviceR
 $$
 
 4. **Hiring and Firing Caps**:  
 Limit hiring and firing per week:  
+
 $$ 
-H_i \leq \text{maxh}, \quad F_i \leq \text{maxf} 
+H_i \leq maxh, \quad F_i \leq maxf 
 $$
 
 5. **Overtime Limit**:  
 Restrict overtime hours to a percentage of total working hours:  
+
 $$ 
-O_i \leq E_i \cdot \text{overtimeR} 
+O_i \leq E_i \cdot overtime_rate 
 $$
 
 6. **Budget Constraint**:  
 Ensure total costs do not exceed the budget:  
+
 $$ 
-sum_{i=1}^{m} H_i \cdot \text{hiringC} + F_i \cdot \text{firingC} + E_i \cdot \text{salaryC} + O_i \cdot \text{overtimeC} \leq \text{budget} 
+\sum_{i=1}^{m} H_i \cdot hiring_cost + F_i \cdot firing_cost + E_i \cdot salary_cost + O_i \cdot overtime_cost \leq budget 
 $$
    
 ---
