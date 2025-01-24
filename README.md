@@ -108,7 +108,7 @@ $
    \]
 5. **Budget Constraint:**
    \[
-   \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} \big) \leq \text{budget}
+   \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot salary\_cost + O_i \cdot \text{overtime\_cost} \big) \leq \text{budget}
    \]
 
 ---
