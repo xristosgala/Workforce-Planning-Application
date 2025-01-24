@@ -42,5 +42,5 @@ Let:
 Minimize the total transportation cost:
 
 $$
-\min Z = \sum_{i=1}^{m} H_{i} \cdot hiring_cost + F_{i} \cdot firing_cost + E_{i} \cdot salary_cost + O_{i} \cdot overtime_cost + U{i} \cdot penalty_cost
+\min Z = \sum_{i=1}^{m} H_{i} \cdot hiring_cost + F_{i} \cdot firing\_cost + E_{i} \cdot salary/_cost + O_{i} \cdot overtime_cost + U{i} \cdot penalty_cost
 $$
