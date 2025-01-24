@@ -12,9 +12,35 @@ This application involves a Workforce Planning Problem using Linear Programming 
 ## Mathematical Formulation (Linear Programming Model)
 
 ### Indexes
-i = number of weeks i.e. 1,2,...,51,52.
+$i$ = number of weeks i.e. 1,2, \dots, m$
 
 ### Parameters
 Let:
 
-- $D_i$ is the demand at week $i$, for $i = 1, 2, ... \dots, m$.
+- $D_i$ is the demand (in hours) at week $i$, for $i = 1, 2, ... \dots, m$.
+- hiring_cost is the cost of hiring one employee per week.
+- firing_cost is the cost of firing one employee per week.
+- salary_cost is the cost of maintaining one employee per week.
+- penalty_cost is the cost of unmet demand per week.
+- overtime_cost is the cost of overtime in hours per week.
+- initial_employees is the starting number of employees at week 1.
+- maximum_hiring is the maximum number of employees that can be hired each week.
+- maximum_firing is the maximum number of employees that can be fired each week.
+- overtime_horus is the maximum number of overtime hours that an employee can work each week.
+- working_hours is the maximum number of working hours that an employee can work each week.
+- budget_limit is the maximum budget available over all weeks.
+- service_rate is the percentage number of customer service each week.
+
+### Decision Variables:
+- $H_{i}$: Integer decision variable representing the number of employees hired each week $i$.
+- $F_{i}$: Integer decision variable representing the number of employees fired each week $i$.
+- $E_{i}$: Integer decision variable representing the number of employees maintained each week $i$.
+- $O_{i}$: Integer decision variable representing the number of overtime hours each week $i$.
+- $U_{i}$: Integer decision variable representing the number of unmet demand each week $i$.
+
+### Objective Function:
+Minimize the total transportation cost:
+
+$$
+\min Z = \sum_{i=1}^{m} H_{i} \cdot hiring_cost + F_{i} \cdot firing_cost + E_{i} \cdot salary_cost + O_{i} \cdot overtime_cost + U{i} \cdot penalty_cost
+$$
