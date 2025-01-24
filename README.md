@@ -141,13 +141,13 @@ The problem is solved using PuLP's LpProblem method, which uses available solver
 2. Click on "optimize" button
 
 ## Requirements:
-Python 3.x
-Streamlit
-Pandas
-PuLP
-Plotly
+- Python 3.x
+- Streamlit
+- Pandas
+- PuLP
+- Plotly
 
 ## Acknowledgments
-PuLP for Linear Programming formulation.
-Plotly for map visualization.
-Stramlit for web app deployment.
+- PuLP for Linear Programming formulation.
+- Plotly for map visualization.
+- Stramlit for web app deployment.
