@@ -82,7 +82,7 @@ The application solves a Linear Programming (LP) model with the following featur
 Minimize the total cost:
 
 $$
-\min Z = \sum_{i=1}^{m} \big( H_i \cdot \text{hiringC} + F_i \cdot \text{firingC} + E_i \cdot \text{salaryC} + O_i \cdot \text{overtimeC} + U_i \cdot \text{penaltyC} \big)
+\min Z = \sum_{i=1}^{m} H_i \cdot \text{hiringC} + F_i \cdot \text{firingC} + E_i \cdot \text{salaryC} + O_i \cdot \text{overtimeC} + U_i \cdot \text{penaltyC}
 $$
 
 ---
@@ -92,7 +92,7 @@ $$
 1. **Employee Balance**:
    - For week 1:  
      $$
-     E_1 = \text{initial\_employees} + H_1 - F_1
+     E_1 = \text{employees0} + H_1 - F_1
      $$
    - For subsequent weeks (\(i > 1\)):  
      $$
@@ -102,7 +102,7 @@ $$
 2. **Demand Satisfaction**:  
    Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
    $$
-   E_i \cdot \text{working\_hours} + O_i + U_i \geq D_i \cdot \text{service\_rate}
+   E_i \cdot \text{workingH} + O_i + U_i \geq D_i \cdot \text{serviceR}
    $$
 
 3. **Hiring and Firing Caps**:  
@@ -114,13 +114,13 @@ $$
 4. **Overtime Limit**:  
    Restrict overtime hours to a percentage of total working hours:  
    $$
-   O_i \leq E_i \cdot \text{overtime\_rate}
+   O_i \leq E_i \cdot \text{overtimeR}
    $$
 
 5. **Budget Constraint**:  
    Ensure total costs do not exceed the budget:  
    $$
-   \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} \big) \leq \text{budget}
+   \sum_{i=1}^{m} \big( H_i \cdot \text{hiringC} + F_i \cdot \text{firingC} + E_i \cdot \text{salaryC} + O_i \cdot \text{overtimeC} \big) \leq \text{budget}
    $$
    
 ---
