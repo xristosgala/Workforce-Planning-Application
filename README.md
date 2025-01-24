@@ -1,7 +1,7 @@
 # Workforce Planning Application
 
 ## Overview
-The Workforce Planning Application optimizes workforce management decisions such as hiring, firing, and maintaining employees while minimizing costs. It uses **Linear Programming (LP)** to model and solve the problem, integrating constraints like hiring/firing limits, budget caps, demand satisfaction, overtime conditions, and penalties for unmet demand. The application is built with **PuLP** (a Python library for linear programming) for optimization and **Streamlit** for an interactive, web-based user interface.
+The Workforce Planning Application optimizes workforce management decisions such as hiring, firing, and maintaining employees while minimizing costs. It uses **Linear Programming (LP)** to model and solve the problem, integrating constraints like hiring/firing limits, budget caps, demand satisfaction, overtime conditions, penalties for unmet demand, and service rates. The application is built with **PuLP** (a Python library for linear programming) for optimization and **Streamlit** for an interactive, web-based user interface.
 
 Users can input parameters, view results in tabular format, and explore insights through visualizations. The app helps decision-makers design efficient workforce strategies and adjust inputs to explore various scenarios.  
 
@@ -31,6 +31,7 @@ The application solves a Linear Programming (LP) model with the following featur
   - **Demand Satisfaction:** Meets weekly demand with a combination of regular workforce, overtime, and unmet demand allowance.
   - **Hiring/Firing Limits:** Caps on maximum hiring and firing per week.
   - **Overtime Limits:** Restricted overtime hours based on employee count.
+  - **Unmet Demand Limits** Ensures the unmet demand is greater than or equal to the left demand after employees work and overtime.
   - **Budget Constraint:** Ensures total cost does not exceed the defined budget.
 
 ### 3. **Interactive Results and Visualizations**
@@ -41,8 +42,8 @@ The application solves a Linear Programming (LP) model with the following featur
   - Overtime hours
   - Unmet demand
 - **Plots for Insightful Analysis:**
-  - **Hired vs. Fired Employees:** A grouped bar chart to visualize weekly hiring and firing.
-  - **Overtime vs. Unmet Demand:** A comparison of how unmet demand is handled through overtime or left unaddressed.
+  - **Hired vs. Fired Employees:** A side-by-side bar chart to visualize weekly hiring and firing.
+  - **Overtime vs. Unmet Demand:** A side-by-side bar chart comparison of how unmet demand is handled through overtime or left unaddressed.
   - **Total Workforce vs. Demand:** A line chart to analyze workforce capacity (including overtime) against demand.
   - **Cost Distribution Pie Chart:** An interactive pie chart showing the proportion of costs (hiring, firing, salary, overtime, and penalties).
 
