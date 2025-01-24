@@ -97,28 +97,21 @@ $$
 
 2. **Demand Satisfaction**:  
    Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
-   $$
-   \E_i \cdot workingH + O_i + U_i \geq D_i \cdot serviceR
-   $$
+   $E_i$ \cdot workingH + $O_i$ + $U_i$ \geq $D_i$ \cdot serviceR
 
 3. **Hiring and Firing Caps**:  
    Limit hiring and firing per week:  
-   $$
-   H_i \leq \text{maxh}, \quad F_i \leq \text{maxf}
-   $$
+   $H_i$ \leq maxh, \quad $F_i$ \leq maxf
 
 4. **Overtime Limit**:  
    Restrict overtime hours to a percentage of total working hours:  
-   $$
-   O_i \leq E_i \cdot \text{overtimeR}
-   $$
+   $O_i$ \leq $E_i$ \cdot overtimeR
 
 5. **Budget Constraint**:  
-   Ensure total costs do not exceed the budget:  
+   Ensure total costs do not exceed the budget:
    $$
    \sum_{i=1}^{m} H_i \cdot \text{hiringC} + F_i \cdot \text{firingC} + E_i \cdot \text{salaryC} + O_i \cdot \text{overtimeC} \leq \text{budget}
    $$
-   
 ---
 
 ## How to Run Locally
