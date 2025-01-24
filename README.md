@@ -95,9 +95,18 @@ $$
    - For subsequent weeks $i > 1$:  
      $E_i$ = $E_{i-1}$ + $H_i$ - $F_i$
 
+
+$$ 
+E_1 = \text{initial\_employees} + H_1 - F_1 
+$$
+- For subsequent weeks (\(i > 1\)):  
+$$ 
+E_i = E_{i-1} + H_i - F_i 
+$$
+
 2. **Demand Satisfaction**:  
    Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
-   $E_i$ workingH + $O_i$ + $U_i$ >= $D_i$ * serviceR
+   $E_i$ workingH + $O_i$ + $U_i$ \geq $D_i$ * serviceR
 
 3. **Hiring and Firing Caps**:  
    Limit hiring and firing per week:  
