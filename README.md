@@ -42,5 +42,24 @@ Let:
 Minimize the total transportation cost:
 
 $$
-\min Z = \sum_{i=1}^{m} H_{i} \cdot hiring_cost + F_{i} \cdot firing\_cost + E_{i} \cdot salary/_cost + O_{i} \cdot overtime_cost + U{i} \cdot penalty_cost
+\min Z = \sum_{i=1}^{m} H_{i} \cdot hiring_cost + F_{i} \cdot firing_cost + E_{i} \cdot salary_cost + O_{i} \cdot overtime_cost + U{i} \cdot penalty_cost
 $$
+
+## Constraints:
+1. **Maintained Employee Balance Constraints:**
+   For week 1:
+       Ensure that the total maintanted employees equal the initial number of employees plus the hired and fired ones:
+$$
+\E_{i} = initial_employees \cplus H_{i} \cminus F_{i} \quad \forall i
+$$
+   For week > 1:
+   Ensure that the total maintanted employees equal the number of maintained employees from the previous week $i-1$ plus the hired and fired ones:
+$$
+\E_{i} = E_{i-1} \cdot H_{i} \cplus H_{i} \cminus F_{i} \quad \forall i
+$$
+
+2. **Demand Constraint**
+   Ensure the employees remaining by the working hours plus the overtime hours and the unmet demand equals the demand times the service rate
+   
+
+
