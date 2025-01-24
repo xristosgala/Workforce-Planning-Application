@@ -91,13 +91,9 @@ $$
 
 1. **Employee Balance**:
    - For week 1:  
-     $$
-     E_1 = \text{employees0} + H_1 - F_1
-     $$
-   - For subsequent weeks (\(i > 1\)):  
-     $$
-     E_i = E_{i-1} + H_i - F_i
-     $$
+     $E_1$ = employees0 + $H_1$ - $F_1$
+   - For subsequent weeks $i > 1$:  
+     $E_i$ = $E_{i-1}$ + $H_i$ - $F_i$
 
 2. **Demand Satisfaction**:  
    Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
