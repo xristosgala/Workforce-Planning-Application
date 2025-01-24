@@ -47,8 +47,6 @@ The application solves a Linear Programming (LP) model with the following featur
   - **Total Workforce vs. Demand:** A line chart to analyze workforce capacity (including overtime) against demand.
   - **Cost Distribution Pie Chart:** An interactive pie chart showing the proportion of costs (hiring, firing, salary, overtime, and penalties).
 
----
-
 ## Mathematical Formulation
 
 ### **Indexes**
@@ -84,8 +82,6 @@ Minimize the total cost:
 $$
 \min Z = \sum_{i=1}^{m} H_i \cdot hiring_cost + F_i \cdot firing_cost + E_i \cdot salary_cost + O_i \cdot overtime_cost + U_i \cdot penalty_cost
 $$
-
----
 
 ### **Constraints**:
 
@@ -137,7 +133,21 @@ $$
 \sum_{i=1}^{m} H_i \cdot hiring_cost + F_i \cdot firing_cost + E_i \cdot salary_cost + O_i \cdot overtime_cost \leq budget 
 $$
    
----
+### Solving the Model:
+The problem is solved using PuLP's LpProblem method, which uses available solvers (e.g., CBC) to find the optimal solution.
 
-## How to Run Locally
+## How to Use:
+1. Input the parameters
+2. Click on "optimize" button
 
+## Requirements:
+Python 3.x
+Streamlit
+Pandas
+PuLP
+Plotly
+
+## Acknowledgments
+PuLP for Linear Programming formulation.
+Plotly for map visualization.
+Stramlit for web app deployment.
