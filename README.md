@@ -13,3 +13,8 @@ This application involves a Workforce Planning Problem using Linear Programming 
 
 ### Indexes
 i = number of weeks i.e. 1,2,...,51,52.
+
+### Parameters
+Let:
+
+- $D_i$ is the demand at week $i$, for $i = 1, 2, ... \dots, m$.
