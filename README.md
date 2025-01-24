@@ -120,7 +120,7 @@ $$
 5. **Budget Constraint**:  
    Ensure total costs do not exceed the budget:  
    $$
-   \sum_{i=1}^{m} \big( H_i \cdot \text{hiringC} + F_i \cdot \text{firingC} + E_i \cdot \text{salaryC} + O_i \cdot \text{overtimeC} \big) \leq \text{budget}
+   \sum_{i=1}^{m} H_i \cdot \text{hiringC} + F_i \cdot \text{firingC} + E_i \cdot \text{salaryC} + O_i \cdot \text{overtimeC} \leq \text{budget}
    $$
    
 ---
