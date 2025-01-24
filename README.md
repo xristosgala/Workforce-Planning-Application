@@ -102,7 +102,7 @@ $$
 2. **Demand Satisfaction**:  
    Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
    $$
-   E_i \cdot {workingH + O_i + U_i \geq D_i \cdot serviceR
+   \E_i \cdot workingH + O_i + U_i \geq D_i \cdot serviceR
    $$
 
 3. **Hiring and Firing Caps**:  
