@@ -96,7 +96,7 @@ $$
 E_1 = initial_employees + H_1 - F_1 
 $$
 
--For subsequent weeks (\(i > 1\)):
+- For subsequent weeks (\(i > 1\)):
 
 $$ 
 E_i = E_{i-1} + H_i - F_i 
