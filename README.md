@@ -1,65 +1,116 @@
-# Workforce-Planning Application
+# Workforce Planning Application
 
 ## Overview
-This application involves a Workforce Planning Problem using Linear Programming (LP) to optimize the decisions of hiring, firing and maintaining employees while minimizing costs. It integrates multiple constraints such as maximum number of hired and fired employees, budget limit, demand satisfaction, overtime condition and unmet demand limit, all to ensure that the planning system runs efficiently. The problem is solved using PuLP (a Python library for LP problems) and results are visualized using Streamlit for an interactive web-based experience. Additionally, the solution includes various plots allowing the user to gain informative insights. The app can be accessed via this link: [https://optimized-transportation-allocation-system-and-route-mapping.streamlit.app/](https://workforce-planning-scmzo5wmkrecgorpzupb3h.streamlit.app/)
+The Workforce Planning Application optimizes workforce management decisions such as hiring, firing, and maintaining employees while minimizing costs. It uses **Linear Programming (LP)** to model and solve the problem, integrating constraints like hiring/firing limits, budget caps, demand satisfaction, overtime conditions, and penalties for unmet demand. The application is built with **PuLP** (a Python library for linear programming) for optimization and **Streamlit** for an interactive, web-based user interface.
+
+Users can input parameters, view results in tabular format, and explore insights through visualizations. The app helps decision-makers design efficient workforce strategies and adjust inputs to explore various scenarios.  
+
+👉 **Try the app here:** [Workforce Planning App](https://workforce-planning-scmzo5wmkrecgorpzupb3h.streamlit.app/)
+
+---
 
 ## Features
-**Data Input:** Users can input data from the left sidebar which includes number of weeks, hiring cost, firing cost, salary cost, penalty cost, overtime cost, initial number of employees, maximum hiring, maximumg firing, overtime hours, working hours, budget limit, demand data and service rate. .
-**Optimization Model:** The system builds and solves a LP model that minimizes planning costs while satisfying all constraints (e.g., demand, budget, working hours, etc.).
-**Visualizations:** Many plots are being created such as a simple summarization table, a bar plot between hired vs fired employees, a bar plot between overtime and unmet demand, a line plot of total workforce (employees + overtime) vs demand and last a costs distribution pie chart.
-**Duals and Slacks:** Outputs the duals and slacks for each constraint to analyze the optimization.
 
-## Mathematical Formulation (Linear Programming Model)
+### 1. **User-Friendly Input Interface**
+- Configure all parameters via the Streamlit sidebar:
+  - **Costs:** Hiring, firing, salary, penalty, and overtime costs.
+  - **Employee Details:** Initial workforce, maximum hiring/firing limits, working hours, and overtime rate.
+  - **Budget and Demand:** Weekly budget cap, demand data, and service rate.
+  - **Demand Data:** Choose between manually inputting demand or generating random demand within a specified range.
 
-### Indexes
-$i$ = number of weeks i.e. 1,2, \dots, m$
+### 2. **Optimization Model**
+The application solves a Linear Programming (LP) model with the following features:
+- **Objective Function:** Minimize the total cost, which includes:
+  - Hiring cost
+  - Firing cost
+  - Salary cost
+  - Overtime cost
+  - Penalty for unmet demand
+- **Constraints:**
+  - **Employee Balance:** Maintains continuity of workforce between weeks.
+  - **Demand Satisfaction:** Meets weekly demand with a combination of regular workforce, overtime, and unmet demand allowance.
+  - **Hiring/Firing Limits:** Caps on maximum hiring and firing per week.
+  - **Overtime Limits:** Restricted overtime hours based on employee count.
+  - **Budget Constraint:** Ensures total cost does not exceed the defined budget.
 
-### Parameters
-Let:
+### 3. **Interactive Results and Visualizations**
+- **Tabular Summary:** A detailed breakdown of weekly performance metrics:
+  - Demand
+  - Hiring and firing decisions
+  - Employee count
+  - Overtime hours
+  - Unmet demand
+- **Plots for Insightful Analysis:**
+  - **Hired vs. Fired Employees:** A grouped bar chart to visualize weekly hiring and firing.
+  - **Overtime vs. Unmet Demand:** A comparison of how unmet demand is handled through overtime or left unaddressed.
+  - **Total Workforce vs. Demand:** A line chart to analyze workforce capacity (including overtime) against demand.
+  - **Cost Distribution Pie Chart:** An interactive pie chart showing the proportion of costs (hiring, firing, salary, overtime, and penalties).
 
-- $D_i$ is the demand (in hours) at week $i$, for $i = 1, 2, ... \dots, m$.
-- hiring_cost is the cost of hiring one employee per week.
-- firing_cost is the cost of firing one employee per week.
-- salary_cost is the cost of maintaining one employee per week.
-- penalty_cost is the cost of unmet demand per week.
-- overtime_cost is the cost of overtime in hours per week.
-- initial_employees is the starting number of employees at week 1.
-- maximum_hiring is the maximum number of employees that can be hired each week.
-- maximum_firing is the maximum number of employees that can be fired each week.
-- overtime_horus is the maximum number of overtime hours that an employee can work each week.
-- working_hours is the maximum number of working hours that an employee can work each week.
-- budget_limit is the maximum budget available over all weeks.
-- service_rate is the percentage number of customer service each week.
+---
 
-### Decision Variables:
-- $H_{i}$: Integer decision variable representing the number of employees hired each week $i$.
-- $F_{i}$: Integer decision variable representing the number of employees fired each week $i$.
-- $E_{i}$: Integer decision variable representing the number of employees maintained each week $i$.
-- $O_{i}$: Integer decision variable representing the number of overtime hours each week $i$.
-- $U_{i}$: Integer decision variable representing the number of unmet demand each week $i$.
+## Mathematical Formulation
 
-### Objective Function:
-Minimize the total transportation cost:
+### **Indexes**
+- \(i\): Week index (1, 2, ..., \(m\)).
 
-$$
-\min Z = \sum_{i=1}^{m} H_{i} \cdot hiring_cost + F_{i} \cdot firing_cost + E_{i} \cdot salary_cost + O_{i} \cdot overtime_cost + U{i} \cdot penalty_cost
-$$
+### **Parameters**
+- \(D_i\): Weekly demand (in hours) at week \(i\).
+- **Costs:**
+  - `hiring_cost`: Cost to hire one employee per week.
+  - `firing_cost`: Cost to fire one employee per week.
+  - `salary_cost`: Cost to maintain one employee per week.
+  - `penalty_cost`: Cost for unmet demand per week.
+  - `overtime_cost`: Cost of overtime hours per week.
+- **Employee Details:**
+  - `initial_employees`: Initial workforce at week 1.
+  - `maxh`: Maximum number of employees that can be hired per week.
+  - `maxf`: Maximum number of employees that can be fired per week.
+  - `overtime_rate`: Maximum overtime hours per employee.
+  - `working_hours`: Maximum regular working hours per employee.
+- `budget`: Maximum budget available.
+- `service_rate`: Fraction of demand that must be met each week.
 
-## Constraints:
-1. **Maintained Employee Balance Constraints:**
-   For week 1:
-       Ensure that the total maintanted employees equal the initial number of employees plus the hired and fired ones:
-$$
-\E_{i} = initial_employees \cplus H_{i} \cminus F_{i} \quad \forall i
-$$
-   For week > 1:
-   Ensure that the total maintanted employees equal the number of maintained employees from the previous week $i-1$ plus the hired and fired ones:
-$$
-\E_{i} = E_{i-1} \cdot H_{i} \cplus H_{i} \cminus F_{i} \quad \forall i
-$$
+### **Decision Variables**
+- \(H_i\): Number of employees hired in week \(i\).
+- \(F_i\): Number of employees fired in week \(i\).
+- \(E_i\): Number of employees maintained in week \(i\).
+- \(O_i\): Total overtime hours in week \(i\).
+- \(U_i\): Unmet demand (in hours) in week \(i\).
 
-2. **Demand Constraint**
-   Ensure the employees remaining by the working hours plus the overtime hours and the unmet demand equals the demand times the service rate
-   
+### **Objective Function**
+Minimize total cost:
+\[
+Z = \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} + U_i \cdot \text{penalty\_cost} \big)
+\]
 
+### **Constraints**
+1. **Employee Balance:**
+   - Week 1:
+     \[
+     E_1 = \text{initial\_employees} + H_1 - F_1
+     \]
+   - Week \(i > 1\):
+     \[
+     E_i = E_{i-1} + H_i - F_i
+     \]
+2. **Demand Satisfaction:**
+   \[
+   E_i \cdot \text{working\_hours} + O_i + U_i \geq D_i \cdot \text{service\_rate}
+   \]
+3. **Hiring/Firing Caps:**
+   \[
+   H_i \leq \text{maxh}, \quad F_i \leq \text{maxf}
+   \]
+4. **Overtime Limit:**
+   \[
+   O_i \leq E_i \cdot \text{overtime\_rate}
+   \]
+5. **Budget Constraint:**
+   \[
+   \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} \big) \leq \text{budget}
+   \]
+
+---
+
+## How to Run Locally
 
