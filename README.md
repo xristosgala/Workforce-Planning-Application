@@ -106,7 +106,7 @@ $$
 Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
 
 $$ 
-E_i \cdot working_hours + O_i + U_i \geq D_i \cdot serviceR
+E_i \cdot working_hours + O_i + U_i \geq D_i \cdot service_rate
 $$
 
 4. **Hiring and Firing Caps**:  
@@ -123,7 +123,14 @@ $$
 O_i \leq E_i \cdot overtime_rate 
 $$
 
-6. **Budget Constraint**:  
+6. **Unmet Demand Limit**
+Ensure the Unmet Demand is larger than or equal to the remaining demand after the working hours and the overtime:
+
+$$
+U_i \geq D_i - E_i \cdot wokring_hours - O[i]
+$$
+
+8. **Budget Constraint**:  
 Ensure total costs do not exceed the budget:  
 
 $$ 
