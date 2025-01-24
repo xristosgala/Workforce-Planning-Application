@@ -97,7 +97,7 @@ $$
 
 
 $$ 
-E_1 = \text{initial\_employees} + H_1 - F_1 
+E_1 = \text{initial} + H_1 - F_1 
 $$
 - For subsequent weeks (\(i > 1\)):  
 $$ 
