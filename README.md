@@ -80,9 +80,9 @@ The application solves a Linear Programming (LP) model with the following featur
 
 ### **Objective Function**
 Minimize total cost:
-$
-\min Z = \sum_{i=1}^{m} H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} + U_i \cdot \text{penalty\_cost}
-$
+$$
+\min Z = \sum_{i=1}^{m} H_i \cdot hiring\_cost + F_i \cdot firing\_cost + E_i \cdot salary\_cost + O_i \cdot overtime\_cost + U_i \cdot penalty\_cost
+$$
 
 ### **Constraints**
 1. **Employee Balance:**
@@ -108,7 +108,7 @@ $
    \]
 5. **Budget Constraint:**
    \[
-   \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot salary\_cost + O_i \cdot \text{overtime\_cost} \big) \leq \text{budget}
+   \sum_{i=1}^{m} \big( H_i \cdot hiring\_cost + F_i \cdot firing\_cost + E_i \cdot salary\_cost + O_i \cdot \text{overtime\_cost \big) \leq \text{budget}
    \]
 
 ---
