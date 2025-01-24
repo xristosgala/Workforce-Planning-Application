@@ -78,39 +78,51 @@ The application solves a Linear Programming (LP) model with the following featur
 - $O_i$: Total overtime hours in week $i$.
 - $U_i$: Unmet demand (in hours) in week $i$.
 
-### **Objective Function**
-Minimize total cost:
+### **Objective Function**:
+Minimize the total cost:
+
 $$
-\min Z = \sum_{i=1}^{m} H_i \cdot hiring + F_i \cdot firing + E_i \cdot salary + O_i \cdot overtime + U_i \cdot penalty
+\min Z = \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} + U_i \cdot \text{penalty\_cost} \big)
 $$
 
-### **Constraints**
-1. **Employee Balance:**
-   - Week 1:
-     \[
+---
+
+### **Constraints**:
+
+1. **Employee Balance**:
+   - For week 1:  
+     $$
      E_1 = \text{initial\_employees} + H_1 - F_1
-     \]
-   - Week \(i > 1\):
-     \[
+     $$
+   - For subsequent weeks (\(i > 1\)):  
+     $$
      E_i = E_{i-1} + H_i - F_i
-     \]
-2. **Demand Satisfaction:**
-   \[
-   E_i \cdot \text{working\_hours} + O_i + U_i \geq D_i \cdot \text{service\_rate}
-   \]
-3. **Hiring/Firing Caps:**
-   \[
-   H_i \leq \text{maxh}, \quad F_i \leq \text{maxf}
-   \]
-4. **Overtime Limit:**
-   \[
-   O_i \leq E_i \cdot \text{overtime\_rate}
-   \]
-5. **Budget Constraint:**
-   \[
-   \sum_{i=1}^{m} \big( H_i \cdot hiring\_cost + F_i \cdot firing\_cost + E_i \cdot salary\_cost + O_i \cdot \text{overtime\_cost \big) \leq \text{budget}
-   \]
+     $$
 
+2. **Demand Satisfaction**:  
+   Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
+   $$
+   E_i \cdot \text{working\_hours} + O_i + U_i \geq D_i \cdot \text{service\_rate}
+   $$
+
+3. **Hiring and Firing Caps**:  
+   Limit hiring and firing per week:  
+   $$
+   H_i \leq \text{maxh}, \quad F_i \leq \text{maxf}
+   $$
+
+4. **Overtime Limit**:  
+   Restrict overtime hours to a percentage of total working hours:  
+   $$
+   O_i \leq E_i \cdot \text{overtime\_rate}
+   $$
+
+5. **Budget Constraint**:  
+   Ensure total costs do not exceed the budget:  
+   $$
+   \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} \big) \leq \text{budget}
+   $$
+   
 ---
 
 ## How to Run Locally
