@@ -52,10 +52,10 @@ The application solves a Linear Programming (LP) model with the following featur
 ## Mathematical Formulation
 
 ### **Indexes**
-- \(i\): Week index (1, 2, ..., \(m\)).
+- $i$: Week index (1, 2, ..., m$).
 
 ### **Parameters**
-- \(D_i\): Weekly demand (in hours) at week \(i\).
+- $D_i$: Weekly demand (in hours) at week $i$.
 - **Costs:**
   - `hiring_cost`: Cost to hire one employee per week.
   - `firing_cost`: Cost to fire one employee per week.
@@ -72,17 +72,17 @@ The application solves a Linear Programming (LP) model with the following featur
 - `service_rate`: Fraction of demand that must be met each week.
 
 ### **Decision Variables**
-- \(H_i\): Number of employees hired in week \(i\).
-- \(F_i\): Number of employees fired in week \(i\).
-- \(E_i\): Number of employees maintained in week \(i\).
-- \(O_i\): Total overtime hours in week \(i\).
-- \(U_i\): Unmet demand (in hours) in week \(i\).
+- $H_i$: Number of employees hired in week $i$.
+- $F_i$: Number of employees fired in week $i$.
+- $E_i$: Number of employees maintained in week $i$.
+- $O_i$: Total overtime hours in week $i$.
+- $U_i$: Unmet demand (in hours) in week $i$.
 
 ### **Objective Function**
 Minimize total cost:
-\[
+$
 Z = \sum_{i=1}^{m} \big( H_i \cdot \text{hiring\_cost} + F_i \cdot \text{firing\_cost} + E_i \cdot \text{salary\_cost} + O_i \cdot \text{overtime\_cost} + U_i \cdot \text{penalty\_cost} \big)
-\]
+$
 
 ### **Constraints**
 1. **Employee Balance:**
