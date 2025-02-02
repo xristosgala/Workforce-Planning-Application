@@ -5,7 +5,7 @@ The Workforce Planning Application optimizes workforce management decisions such
 
 Users can input parameters, view results in tabular format, and explore insights through visualizations. The app helps decision-makers design efficient workforce strategies and adjust inputs to explore various scenarios.  
 
-👉 **Try the app here:** [Workforce Planning App](https://workforce-planning-scmzo5wmkrecgorpzupb3h.streamlit.app/)
+👉 **Try the app here:** [Workforce Planning App](workforce-planning-application-jc7bo3tnzssdn6pggcswif)
 
 ---
 
