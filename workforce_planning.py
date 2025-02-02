@@ -116,7 +116,7 @@ if st.button("Optimize"):
         fig.add_trace(go.Bar(x=df['Week'], y=df['Fired'], name='Fired', marker_color='red'))
         fig.update_layout(barmode='group', xaxis_title='Week', yaxis_title='Count',
                           title='Hired vs Fired Employees per Week')
-        st.plotly_chart(fig)
+        st.plotly_chart(fig, use_container_width=True)
     
         # Interactive Plot: Overtime Employees vs Unmet Demand
         fig = go.Figure()
