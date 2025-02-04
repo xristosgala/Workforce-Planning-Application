@@ -102,7 +102,7 @@ $$
 Ensure sufficient workforce (including overtime and underutilization) to meet demand:  
 
 $$ 
-E_i \cdot working_hours + O_i + U_i \geq D_i \cdot service_rate
+E_i \cdot working_hours + O_i + U_i \geq D_i \cdot ServiceRate
 $$
 
 4. **Hiring and Firing Caps**:  
