@@ -4,6 +4,7 @@ from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import pulp
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost,
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate,
@@ -42,7 +43,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     problem += total_cost <= budget, "Budget_Constraint"
 
     # Solve the problem
-    problem.solve()
+    problem.solve(pulp.PULP_CBC_CMD(msg=True, options=['simplex']))
 
     objective_cost = 0
     for i in range(weeks):
