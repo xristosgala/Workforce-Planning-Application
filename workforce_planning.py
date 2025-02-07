@@ -42,7 +42,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     problem += total_cost <= budget, "Budget_Constraint"
 
     # Solve the problem
-    problem.solve()
+    problem.solve(pulp.PULP_CBC_CMD(msg=True, options=['simplex']))
 
     objective_cost = 0
     for i in range(weeks):
