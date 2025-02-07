@@ -30,7 +30,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
             problem += E[i] == E[i-1] + H[i] - F[i], f"Balance_{i}"
 
         # Demand constraint
-        problem += E[i]*working_hours + O[i] + U[i] >= demand[i] * service_rate, f"Demand_{i}"
+        problem += E[i]*working_hours + O[i] - U[i] >= demand[i] * service_rate, f"Demand_{i}"
         problem += H[i] <= maxh, f"Hiring_Capacity_{i}"
         problem += F[i] <= maxf, f"Firing_Capacity_{i}"
         problem += O[i] <= E[i] * overtime_rate, f"Overtime_{i}"
