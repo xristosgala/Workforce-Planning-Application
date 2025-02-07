@@ -51,6 +51,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     results = {
         "Status": LpStatus[problem.status],
         "Total Cost": problem.objective.value() - objective_cost,
+        "cost": problem.objective.value(),
         "Details": []
     }
 
@@ -104,6 +105,7 @@ if st.button("Optimize"):
     if results['Status']=='Optimal':
         st.success(f"Status: {results['Status']}")
         st.write(f"Total Cost: {results['Total Cost']}")
+        st.write(f"cost objective: {results['cost']}")
     
         # Convert results to DataFrame
         df = pd.DataFrame(results["Details"])
