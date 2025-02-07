@@ -1,11 +1,11 @@
 import streamlit as st
 import random
-from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus, PULP_CBC_CMD
+from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import pulp
-
+import PULP_CBC_CMD
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost,
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate,
