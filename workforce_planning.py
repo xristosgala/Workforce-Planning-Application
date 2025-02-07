@@ -1,6 +1,6 @@
 import streamlit as st
 import random
-from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
+from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus, PULP_CBC_CMD
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
