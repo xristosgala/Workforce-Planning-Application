@@ -1,10 +1,11 @@
 import streamlit as st
 import random
-from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
+from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus, PULP_CBC_CMD
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import pulp
+
 
 def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penalty_cost,
                               overtime_cost, initial_employees, maxh, maxf, overtime_rate,
@@ -43,7 +44,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     problem += total_cost <= budget, "Budget_Constraint"
 
     # Solve the problem
-    problem.solve(pulp.PULP_CBC_CMD(msg=True, options=['simplex']))
+    problem.solve(PULP_CBC_CMD(msg=True, method="simplex"))
 
     objective_cost = 0
     for i in range(weeks):
