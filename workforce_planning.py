@@ -1,6 +1,6 @@
 import streamlit as st
 import random
-from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus, PULP_CBC_CMD
+from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpStatus
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
@@ -42,7 +42,7 @@ def solve_workforce_planning(weeks, hiring_cost, firing_cost, salary_cost, penal
     problem += total_cost <= budget, "Budget_Constraint"
 
     # Solve the problem
-    problem.solve(PULP_CBC_CMD(timeLimit=60, gapRel=0, options=["integerTolerance=0"], msg=True))
+    problem.solve()
 
 
     objective_cost = 0
